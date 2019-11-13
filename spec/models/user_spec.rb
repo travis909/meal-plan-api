@@ -20,9 +20,12 @@ RSpec.describe User, type: :model do
         expect(user2).to eq(nil)
       end
     end
-    it 'should have a password' do
-      user.password_digest = nil
-      expect(user).not_to be_valid
+
+    context 'password' do
+      it 'should have a password' do
+        user.password_digest = nil
+        expect(user).not_to be_valid
+      end
     end
   end
 end
