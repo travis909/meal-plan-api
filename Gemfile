@@ -16,7 +16,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails', '~> 3.9'
-  gem 'selenium-webdriver'
 end
 
 group :development do
