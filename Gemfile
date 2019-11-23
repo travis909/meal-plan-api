@@ -6,6 +6,7 @@ ruby '2.5.5'
 gem 'bcrypt'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'hirb'
+gem 'jwt', "~> 2.2"
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 6.0.0'
@@ -25,3 +26,5 @@ group :development do
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+gem "jwt", "~> 2.2"

@@ -15,32 +15,57 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe 'POST user#create' do
     it 'should create a new user' do
-      post :create, params: { user: { email: 'test@test.org', password: '123456' } }
+      post :create, params: { user: {
+        email: 'test@test.org', password: '123456'
+      } }.as_json
+
       expect(JSON.parse(response.body)['status']).to eq('created')
     end
     it 'should not create user with the same email' do
       User.create(email: 'test@test.org', password: '123456')
-      post :create, params: { user: { email: 'test@test.org', password: '123456' } }
+      post :create, params: { user: {
+        email: 'test@test.org', password: '123456'
+      } }.as_json
+
       expect(JSON.parse(response.body)['errors']).to eq('unprocessable_entry')
     end
   end
 
   describe 'PATCH user#update' do
-    it 'should update the users password' do
-      patch :update, params: { id: user.id, user: { email: user.email, password: '123456' } }, as: :json
-      expect(JSON.parse(response.body)['status']).to eq('updated')
+    context 'it should update the user' do
+      it 'should update the users with valid params' do
+        request.headers[:Authorization] = JsonWebToken.encode(user_id: user.id)
+        patch :update,
+              params: { id: user.id, user: {
+                email: user.email, password: '123456'
+              } }, as: :json
+
+        expect(JSON.parse(response.body)['status']).to eq('updated')
+      end
     end
-    it 'should not update the user with invalid params' do
-      patch :update, params: { id: user.id, user: { email: 'bad_email', password: '123456' } }, as: :json
-      expect(JSON.parse(response.body)['errors']).to eq('unprocessable_entry')
+
+    context 'it should not update the user' do
+      it 'should not update the user with invalid params' do
+        request.headers[:Authorization] = JsonWebToken.encode(user_id: user.id)
+        patch :update, params: { id: user.id, user: {
+          email: 'bad_email', password: '123456'
+        } }.as_json
+        expect(JSON.parse(response.body)['errors']).to eq('unprocessable_entry')
+      end
     end
   end
 
-  describe 'should destroy the user' do
-    it 'should delete the user' do
-      new_user = FactoryBot.create(:user)
-      delete :destroy, params: { id: new_user.id }, as: :json
-      expect(response).to have_http_status(:no_content)
+  describe 'DELETE user#destroy' do
+    context 'it should delete the user' do
+      it 'should delete the user' do
+        new_user = FactoryBot.create(:user)
+        request.headers[:Authorization] = JsonWebToken.encode(user_id: new_user.id)
+        delete :destroy, params: { id: new_user.id }, as: :json
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context 'it should not delete the user' do
     end
   end
 end
