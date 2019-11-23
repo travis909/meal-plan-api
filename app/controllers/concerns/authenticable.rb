@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # methods being used for authentication
 
 # app/controllers/concerns/authenticable.rb
@@ -14,5 +16,11 @@ module Authenticable
       begin User.find(decoded[:user_id])
       rescue ActiveRecord::RecordNotFound
       end
+  end
+
+  protected
+
+  def check_login
+    head :forbidden unless current_user
   end
 end

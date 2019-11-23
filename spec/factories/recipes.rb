@@ -1,49 +1,51 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :recipe do
-    name { "MyString" }
-    directions { "MyText" }
-    servings { 1.5 }
-    energy { 1.5 }
-    carbs { 1.5 }
-    fiber { 1.5 }
-    sugar { 1.5 }
-    fat { 1.5 }
-    monounsaturated { 1.5 }
-    polyunsaturated { 1.5 }
-    omega3 { 1.5 }
-    omega6 { 1.5 }
-    saturated { 1.5 }
-    transfat { 1.5 }
-    cholesterol { 1.5 }
-    protein { 1.5 }
-    vit_b1 { 1.5 }
-    vit_b2 { 1.5 }
-    vit_b3 { 1.5 }
-    vit_b5 { 1.5 }
-    vit_b6 { 1.5 }
-    vit_b12 { 1.5 }
-    biotin { 1.5 }
-    choline { 1.5 }
-    folate { 1.5 }
-    vit_a { 1.5 }
-    vit_c { 1.5 }
-    vit_d { 1.5 }
-    vit_e { 1.5 }
-    vit_k { 1.5 }
-    calcium { 1.5 }
-    chromium { 1.5 }
-    copper { 1.5 }
-    fluoride { 1.5 }
-    iodine { 1.5 }
-    iron { 1.5 }
-    magnesium { 1.5 }
-    manganese { 1.5 }
-    molybdenum { 1.5 }
-    phosphorus { 1.5 }
-    potassium { 1.5 }
-    selenium { 1.5 }
-    sodium { 1.5 }
-    zinc { 1.5 }
+    name { Faker::Food.dish }
+    directions { Faker::Food.description }
+    servings { Faker::Number.decimal(l_digits: 2) }
+    energy { Faker::Number.decimal(l_digits: 2) }
+    carbs { Faker::Number.decimal(l_digits: 2) }
+    fiber { Faker::Number.decimal(l_digits: 2) }
+    sugar { Faker::Number.decimal(l_digits: 2) }
+    fat { Faker::Number.decimal(l_digits: 2) }
+    monounsaturated { Faker::Number.decimal(l_digits: 2) }
+    polyunsaturated { Faker::Number.decimal(l_digits: 2) }
+    omega3 { Faker::Number.decimal(l_digits: 2) }
+    omega6 { Faker::Number.decimal(l_digits: 2) }
+    saturated { Faker::Number.decimal(l_digits: 2) }
+    transfat { Faker::Number.decimal(l_digits: 2) }
+    cholesterol { Faker::Number.decimal(l_digits: 2) }
+    protein { Faker::Number.decimal(l_digits: 2) }
+    vit_b1 { Faker::Number.decimal(l_digits: 2) }
+    vit_b2 { Faker::Number.decimal(l_digits: 2) }
+    vit_b3 { Faker::Number.decimal(l_digits: 2) }
+    vit_b5 { Faker::Number.decimal(l_digits: 2) }
+    vit_b6 { Faker::Number.decimal(l_digits: 2) }
+    vit_b12 { Faker::Number.decimal(l_digits: 2) }
+    biotin { Faker::Number.decimal(l_digits: 2) }
+    choline { Faker::Number.decimal(l_digits: 2) }
+    folate { Faker::Number.decimal(l_digits: 2) }
+    vit_a { Faker::Number.decimal(l_digits: 2) }
+    vit_c { Faker::Number.decimal(l_digits: 2) }
+    vit_d { Faker::Number.decimal(l_digits: 2) }
+    vit_e { Faker::Number.decimal(l_digits: 2) }
+    vit_k { Faker::Number.decimal(l_digits: 2) }
+    calcium { Faker::Number.decimal(l_digits: 2) }
+    chromium { Faker::Number.decimal(l_digits: 2) }
+    copper { Faker::Number.decimal(l_digits: 2) }
+    fluoride { Faker::Number.decimal(l_digits: 2) }
+    iodine { Faker::Number.decimal(l_digits: 2) }
+    iron { Faker::Number.decimal(l_digits: 2) }
+    magnesium { Faker::Number.decimal(l_digits: 2) }
+    manganese { Faker::Number.decimal(l_digits: 2) }
+    molybdenum { Faker::Number.decimal(l_digits: 2) }
+    phosphorus { Faker::Number.decimal(l_digits: 2) }
+    potassium { Faker::Number.decimal(l_digits: 2) }
+    selenium { Faker::Number.decimal(l_digits: 2) }
+    sodium { Faker::Number.decimal(l_digits: 2) }
+    zinc { Faker::Number.decimal(l_digits: 2) }
     user { nil }
   end
 end
