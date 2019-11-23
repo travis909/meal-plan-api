@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
+  let(:recipe) { FactoryBot.create(:recipe) }
 
   describe 'GET user#show' do
     it 'should show the user' do
@@ -66,6 +67,20 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     context 'it should not delete the user' do
+      it 'should not delete the user' do
+        new_user = FactoryBot.create(:user)
+        delete :destroy, params: { id: new_user.id }, as: :json
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'DELETE user#destroy should destroy recipe' do
+      it 'should delete the user and the linked recipes' do
+        recipe1 = FactoryBot.create(:recipe, user: user)
+        total_recipes = Recipe.count
+        user.destroy
+        expect(Recipe.count).to eq(total_recipes - 1)
+      end
     end
   end
 end

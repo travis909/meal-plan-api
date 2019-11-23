@@ -7,4 +7,5 @@ class User < ApplicationRecord
   validates_format_of :email, with: /@/
 
   has_secure_password
+  has_many :recipes, dependent: :destroy
 end

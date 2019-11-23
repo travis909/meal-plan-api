@@ -1,0 +1,49 @@
+FactoryBot.define do
+  factory :recipe do
+    name { "MyString" }
+    directions { "MyText" }
+    servings { 1.5 }
+    energy { 1.5 }
+    carbs { 1.5 }
+    fiber { 1.5 }
+    sugar { 1.5 }
+    fat { 1.5 }
+    monounsaturated { 1.5 }
+    polyunsaturated { 1.5 }
+    omega3 { 1.5 }
+    omega6 { 1.5 }
+    saturated { 1.5 }
+    transfat { 1.5 }
+    cholesterol { 1.5 }
+    protein { 1.5 }
+    vit_b1 { 1.5 }
+    vit_b2 { 1.5 }
+    vit_b3 { 1.5 }
+    vit_b5 { 1.5 }
+    vit_b6 { 1.5 }
+    vit_b12 { 1.5 }
+    biotin { 1.5 }
+    choline { 1.5 }
+    folate { 1.5 }
+    vit_a { 1.5 }
+    vit_c { 1.5 }
+    vit_d { 1.5 }
+    vit_e { 1.5 }
+    vit_k { 1.5 }
+    calcium { 1.5 }
+    chromium { 1.5 }
+    copper { 1.5 }
+    fluoride { 1.5 }
+    iodine { 1.5 }
+    iron { 1.5 }
+    magnesium { 1.5 }
+    manganese { 1.5 }
+    molybdenum { 1.5 }
+    phosphorus { 1.5 }
+    potassium { 1.5 }
+    selenium { 1.5 }
+    sodium { 1.5 }
+    zinc { 1.5 }
+    user { nil }
+  end
+end
