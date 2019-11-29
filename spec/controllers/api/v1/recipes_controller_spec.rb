@@ -38,7 +38,7 @@ RSpec.describe Api::V1::RecipesController, type: :controller do
       end
     end
 
-    context 'should not create a recipe' do
+    context 'should forbid recipe creation without authorization' do
       it 'should not create a recipe without authorization' do
         request.headers[:Authorization] = nil
         expect do
@@ -47,6 +47,42 @@ RSpec.describe Api::V1::RecipesController, type: :controller do
 
         expect(have_http_status(:forbidden))
       end
+    end
+  end
+
+  describe 'updating a recipe' do
+    it 'should update the recipe' do
+      patch :update, params: {
+        id: recipe.id, recipe: { name: recipe.name }
+      }, as: :json
+      expect(have_http_status('updated'))
+    end
+
+    it 'should not update the recipe without authorization' do
+      user2 = FactoryBot.create(:user, id: 2)
+      request.headers[:Authorization] =
+        JsonWebToken.encode(user_id: user2.id)
+      patch :update, params: {
+        id: recipe.id, recipe: { name: recipe.name }
+      }, as: :json
+      expect(have_http_status(:forbidden))
+    end
+  end
+
+  describe 'deleting a recipe' do
+    it 'should delete the recipe' do
+      expect(
+        delete(:destroy, params: { id: recipe.id }, as: :json)
+      ).to have_http_status(204)
+    end
+
+    it 'should not delete the recipe' do
+      user2 = FactoryBot.create(:user, id: 2)
+      request.headers[:Authorization] =
+        JsonWebToken.encode(user_id: user2.id)
+      expect(
+        delete(:destroy, params: { id: recipe.id }, as: :json)
+      ).to have_http_status(:forbidden)
     end
   end
 end

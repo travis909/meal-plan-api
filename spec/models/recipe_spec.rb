@@ -11,5 +11,10 @@ RSpec.describe Recipe, type: :model do
       recipe.name = nil
       expect(recipe).not_to be_valid
     end
+
+    it 'should have a user' do
+      recipe.user = nil
+      expect(recipe).not_to be_valid
+    end
   end
 end

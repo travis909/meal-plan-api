@@ -4,7 +4,9 @@ module Api
   module V1
     # app/controllers/api/v1/recipes_controller.rb
     class RecipesController < ApplicationController
+      before_action :set_recipe, only: %i[show update destroy]
       before_action :check_login, only: %i[create]
+      before_action :check_owner, only: %i[update destroy]
 
       def show
         render json: Recipe.find(params[:id])
@@ -24,6 +26,20 @@ module Api
         end
       end
 
+      def update
+        if @recipe.update(recipe_params)
+          render(json: { recipe: current_user.recipes.find(params[:id]), status: 'updated' })
+        else
+          render(json: { errors: current_user.recipes.errors }, status:
+              :unprocessable_entity)
+        end
+      end
+
+      def destroy
+        @recipe.destroy
+        head 204
+      end
+
       private
 
       def recipe_params
@@ -37,6 +53,14 @@ module Api
           :fluoride, :iodine, :iron, :magnesium, :manganese, :molybdenum,
           :phosphorus, :potassium, :selenium, :sodium, :zinc
         )
+      end
+
+      def check_owner
+        head :forbidden unless @recipe.user.id == current_user&.id
+      end
+
+      def set_recipe
+        @recipe = Recipe.find(params[:id])
       end
     end
   end
