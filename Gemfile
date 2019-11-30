@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.5'
 
+gem 'active_model_serializers', '~> 0.10.10'
 gem 'bcrypt'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'fast_jsonapi'
 gem 'hirb'
-gem 'jwt', "~> 2.2"
+gem 'jwt', '~> 2.2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 6.0.0'
@@ -26,5 +30,3 @@ group :development do
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
-gem "jwt", "~> 2.2"

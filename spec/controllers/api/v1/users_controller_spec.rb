@@ -5,12 +5,13 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   let(:recipe) { FactoryBot.create(:recipe) }
+  let(:json_response) { JSON.parse(response.body) }
 
   describe 'GET user#show' do
     it 'should show the user' do
       get :show, params: { id: user.id }
       expect(response).to have_http_status(:success)
-      expect(JSON.parse(response.body)['email']).to eq(user.email)
+      expect(json_response['data']['attributes']['email']).to eq(user.email)
     end
   end
 
@@ -20,7 +21,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         email: 'test@test.org', password: '123456'
       } }.as_json
 
-      expect(JSON.parse(response.body)['status']).to eq('created')
+      expect(response).to have_http_status(201)
     end
     it 'should not create user with the same email' do
       User.create(email: 'test@test.org', password: '123456')
@@ -28,7 +29,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         email: 'test@test.org', password: '123456'
       } }.as_json
 
-      expect(JSON.parse(response.body)['errors']).to eq('unprocessable_entry')
+      expect(json_response['errors']).to eq('unprocessable_entry')
     end
   end
 
@@ -38,10 +39,10 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         request.headers[:Authorization] = JsonWebToken.encode(user_id: user.id)
         patch :update,
               params: { id: user.id, user: {
-                email: user.email, password: '123456'
+                email: 'updated_email@email.com', password: '123456'
               } }, as: :json
 
-        expect(JSON.parse(response.body)['status']).to eq('updated')
+        expect(json_response['data']['attributes']['email']).to eq('updated_email@email.com')
       end
     end
 
