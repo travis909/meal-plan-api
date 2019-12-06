@@ -52,7 +52,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         patch :update, params: { id: user.id, user: {
           email: 'bad_email', password: '123456'
         } }.as_json
-        expect(JSON.parse(response.body)['errors']).to eq('unprocessable_entry')
+        expect(json_response['errors']).to eq('unprocessable_entry')
       end
     end
   end

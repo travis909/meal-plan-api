@@ -9,17 +9,18 @@ module Api
       before_action :check_owner, only: %i[update destroy]
 
       def show
-        render json: Recipe.find(params[:id])
+        render json: RecipeSerializer.new(@recipe).serializable_hash
       end
 
       def index
-        render json: Recipe.all
+        @recipes = Recipe.all
+        render json: RecipeSerializer.new(@recipes).serializable_hash
       end
 
       def create
         recipe = current_user.recipes.build(recipe_params)
         if recipe.save
-          render(json: { recipe: recipe, status: 'created' })
+          render json: RecipeSerializer.new(recipe).serializable_hash, status: :created
         else
           render(json: { errors: recipe.errors }, status:
               :unprocessable_entity)
@@ -28,7 +29,7 @@ module Api
 
       def update
         if @recipe.update(recipe_params)
-          render(json: { recipe: current_user.recipes.find(params[:id]), status: 'updated' })
+          render json: RecipeSerializer.new(@recipes).serializable_hash
         else
           render(json: { errors: current_user.recipes.errors }, status:
               :unprocessable_entity)
