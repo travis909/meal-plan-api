@@ -17,7 +17,11 @@ RSpec.describe Api::V1::RecipesController, type: :controller do
     it 'should show the recipe' do
       get :show, params: { id: recipe.id }
       expect(response).to have_http_status(:success)
-      expect(json_response['data']['attributes']['name']).to eq(recipe.name)
+      # testing symbolize_names convert others to this format
+      j_response = JSON.parse(response.body, symbolize_names: true)
+      expect(j_response.dig(:data, :attributes, :name)).to eq(recipe.name)
+      expect(j_response.dig(:data, :relationships, :user, :data, :id)).to eq(recipe.user.id.to_s)
+      expect(j_response.dig(:included, 0, :attributes, :email)).to eq(recipe.user.email)
     end
 
     it 'should show all recipes' do

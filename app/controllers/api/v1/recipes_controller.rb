@@ -9,7 +9,8 @@ module Api
       before_action :check_owner, only: %i[update destroy]
 
       def show
-        render json: RecipeSerializer.new(@recipe).serializable_hash
+        options = { include: [:user] }
+        render json: RecipeSerializer.new(@recipe, options).serializable_hash
       end
 
       def index
