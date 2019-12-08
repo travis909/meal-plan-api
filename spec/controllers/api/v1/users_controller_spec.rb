@@ -4,14 +4,17 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
-  let(:recipe) { FactoryBot.create(:recipe) }
-  let(:json_response) { JSON.parse(response.body) }
+  let(:recipe) { FactoryBot.create(:recipe, user: user) }
+  let(:json_response) { JSON.parse(response.body, symbolize_names: true) }
 
   describe 'GET user#show' do
     it 'should show the user' do
+      user.recipes.create(name: 'New Recipe', id: 1)
       get :show, params: { id: user.id }
       expect(response).to have_http_status(:success)
-      expect(json_response['data']['attributes']['email']).to eq(user.email)
+      expect(json_response.dig(:data, :attributes, :email)).to eq(user.email)
+      expect(json_response.dig(:data, :relationships, :recipes, :data, 0, :id)).to eq(user.recipes.first.id.to_s)
+      expect(json_response.dig(:included, 0, :attributes, :name)).to eq(user.recipes.first.name.to_s)       
     end
   end
 
@@ -29,7 +32,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         email: 'test@test.org', password: '123456'
       } }.as_json
 
-      expect(json_response['errors']).to eq('unprocessable_entry')
+      expect(json_response.dig(:errors)).to eq('unprocessable_entry')
     end
   end
 
@@ -42,7 +45,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                 email: 'updated_email@email.com', password: '123456'
               } }, as: :json
 
-        expect(json_response['data']['attributes']['email']).to eq('updated_email@email.com')
+        expect(json_response.dig(:data, :attributes, :email)).to eq('updated_email@email.com')
       end
     end
 
@@ -52,7 +55,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         patch :update, params: { id: user.id, user: {
           email: 'bad_email', password: '123456'
         } }.as_json
-        expect(json_response['errors']).to eq('unprocessable_entry')
+        expect(json_response.dig(:errors)).to eq('unprocessable_entry')
       end
     end
   end

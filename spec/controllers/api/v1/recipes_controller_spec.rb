@@ -6,7 +6,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::RecipesController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   let(:recipe) { FactoryBot.create(:recipe, user: user) }
-  let(:json_response) { JSON.parse(response.body) }
+  let(:json_response) { JSON.parse(response.body, symbolize_names: true) }
 
   before do
     request.headers[:Authorization] =
@@ -17,11 +17,9 @@ RSpec.describe Api::V1::RecipesController, type: :controller do
     it 'should show the recipe' do
       get :show, params: { id: recipe.id }
       expect(response).to have_http_status(:success)
-      # testing symbolize_names convert others to this format
-      j_response = JSON.parse(response.body, symbolize_names: true)
-      expect(j_response.dig(:data, :attributes, :name)).to eq(recipe.name)
-      expect(j_response.dig(:data, :relationships, :user, :data, :id)).to eq(recipe.user.id.to_s)
-      expect(j_response.dig(:included, 0, :attributes, :email)).to eq(recipe.user.email)
+      expect(json_response.dig(:data, :attributes, :name)).to eq(recipe.name)
+      expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq(recipe.user.id.to_s)
+      expect(json_response.dig(:included, 0, :attributes, :email)).to eq(recipe.user.email)
     end
 
     it 'should show all recipes' do
@@ -37,7 +35,7 @@ RSpec.describe Api::V1::RecipesController, type: :controller do
           post :create, params: { recipe: {
             name: recipe.name, user_id: recipe.user.id, id: 15
           } }, as: :json
-          expect(json_response['data']['attributes']['name']).to eq(recipe.name)
+          expect(json_response.dig(:data,:attributes, :name)).to eq(recipe.name)
         end.to change { user.recipes.count }.by(1)
       end
     end
