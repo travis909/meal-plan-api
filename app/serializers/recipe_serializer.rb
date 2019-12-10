@@ -10,6 +10,6 @@ class RecipeSerializer
              :vit_a, :vit_c, :vit_d, :vit_e, :vit_k, :calcium, :chromium,
              :copper, :fluoride, :iodine, :iron, :magnesium, :manganese,
              :molybdenum, :phosphorus, :selenium, :sodium, :zinc
-  
+
   belongs_to :user
 end
