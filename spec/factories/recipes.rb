@@ -46,6 +46,7 @@ FactoryBot.define do
     selenium { Faker::Number.decimal(l_digits: 2) }
     sodium { Faker::Number.decimal(l_digits: 2) }
     zinc { Faker::Number.decimal(l_digits: 2) }
-    user { nil }
+
+    association :user, factory: :user
   end
 end
